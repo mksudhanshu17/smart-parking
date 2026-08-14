@@ -1,4 +1,4 @@
-package com.system.smartParking.user.entity;
+package com.system.smartparking.user.entity;
 
 public enum Role{
     ROLE_USER,
