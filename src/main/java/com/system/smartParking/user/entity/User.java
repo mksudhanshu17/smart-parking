@@ -1,6 +1,8 @@
 package com.system.smartParking.user.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 
 @Entity
 public class User {
