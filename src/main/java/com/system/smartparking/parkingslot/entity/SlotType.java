@@ -1,4 +1,4 @@
-package com.system.smartParking.parkingslot.entity;
+package com.system.smartparking.parkingslot.entity;
 
 public enum SlotType {
 
