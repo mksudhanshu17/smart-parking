@@ -4,6 +4,7 @@ import com.system.smartparking.user.dto.RegisterUserRequest;
 import com.system.smartparking.user.dto.UpdateUserRequest;
 import com.system.smartparking.user.dto.UserResponse;
 import com.system.smartparking.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<UserResponse> registerUser(@RequestBody RegisterUserRequest request){
+    public ResponseEntity<UserResponse> registerUser(@Valid  @RequestBody RegisterUserRequest request){
         UserResponse response = userService.registerUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody  UpdateUserRequest request){
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody  UpdateUserRequest request){
         UserResponse response = userService.updateUser(id, request);
         return ResponseEntity.ok(response);
     }
