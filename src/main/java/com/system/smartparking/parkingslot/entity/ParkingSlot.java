@@ -1,5 +1,6 @@
 package com.system.smartparking.parkingslot.entity;
 
+import com.system.smartparking.parkinglot.entity.ParkingLot;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,12 +18,14 @@ public class ParkingSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String slotNumber; // for example A01,B02
 
     @Enumerated(EnumType.STRING)//this tells jpa that enum is stored as string in db
-    private SlotStatus slotStatus; //enum cuz it can be reserved , occupied
+    private SlotStatus slotStatus = SlotStatus.AVAILABLE; //enum cuz it can be reserved , occupied
 
     @Enumerated(EnumType.STRING)//this tells jpa that enum is stored as string in db
+    @Column(nullable = false)
     private SlotType slotType; //enum cuz it can be bike,car ,ev ,etc
 
     private BigDecimal perHourPrice ; // why not use double?cuz double sometimes can produce
@@ -31,7 +34,7 @@ public class ParkingSlot {
     @Column(nullable = false)
     private Integer floor; // example 0,1,2,3
 
-  //  @ManyToOne// now multiple parking slots can belong to a single parkinglot
-  // @JoinColumn(name ="parking_slot_id")
-  //  private ParkingLot parkingLot; //rn error cuz ParkingLot entity doesnt exist
+    @ManyToOne// now multiple parking slots can belong to a single parkinglot
+    @JoinColumn(name ="parking_lot_id", nullable = false)
+    private ParkingLot parkingLot;
 }

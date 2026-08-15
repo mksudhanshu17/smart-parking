@@ -1,18 +1,19 @@
-package com.system.smartparking.user.entity;
+package com.system.smartparking.parkinglot.entity;
 
+import com.system.smartparking.parkingslot.entity.ParkingSlot;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "users")
-public class User {
+@Table(name= "parking_lots")
+public class ParkingLot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,20 +22,15 @@ public class User {
     private String name;
 
     @Column(nullable = false)
-    private String password;
+    private String location;
 
     @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String phone;
-
+    private Integer totalFloors;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.USER;
+    private ParkingLotStatus status = ParkingLotStatus.ACTIVE;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserStatus status = UserStatus.ACTIVE;
+    @OneToMany(mappedBy = "parkingLot")
+    private List<ParkingSlot> parkingSlots;
 }
