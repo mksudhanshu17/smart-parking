@@ -1,6 +1,7 @@
 package com.system.smartparking.user.service;
 
 import com.system.smartparking.user.dto.RegisterUserRequest;
+import com.system.smartparking.user.dto.UpdateUserRequest;
 import com.system.smartparking.user.dto.UserResponse;
 import com.system.smartparking.user.entity.User;
 import com.system.smartparking.user.exception.UserAlreadyExistsException;
@@ -18,7 +19,7 @@ public class UserService {
 
     // Register User
     public UserResponse registerUser(RegisterUserRequest request){
-        if(userRepository.existsByEmail(request.getEmail())){
+        if(userRepository.existsByEmail(request.getEmail())) {
             throw new UserAlreadyExistsException("User already registered");
         }
         User user = userMapper.mapToUser(request);
@@ -34,6 +35,14 @@ public class UserService {
     // Find User by email ID;
     public User getUserByEmail(String email){
        return userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException("User not found"));
+    }
+
+    // Update User
+    public UserResponse updateUser(Long id, UpdateUserRequest request){
+        User user = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User does not exist"));
+        userMapper.updateFromRequest(request , user);
+        userRepository.save(user);
+        return userMapper.mapToResponse(user);
     }
 
 

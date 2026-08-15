@@ -1,6 +1,7 @@
 package com.system.smartparking.user.mapper;
 
 import com.system.smartparking.user.dto.RegisterUserRequest;
+import com.system.smartparking.user.dto.UpdateUserRequest;
 import com.system.smartparking.user.dto.UserResponse;
 import com.system.smartparking.user.entity.User;
 import org.springframework.stereotype.Component;
@@ -25,5 +26,15 @@ public class UserMapper {
         userResponse.setStatus(user.getStatus());
         userResponse.setRole(user.getRole());
         return userResponse;
+    }
+
+    public User updateFromRequest(UpdateUserRequest request, User user){
+        if(request.getName() != null && !request.getName().isBlank()) {
+        user.setName(request.getName());
+        }
+        if(request.getPhone() != null && !request.getPhone().isBlank()){
+        user.setPhone(request.getPhone());
+        }
+        return user;
     }
 }
