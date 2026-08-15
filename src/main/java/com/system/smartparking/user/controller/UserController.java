@@ -3,14 +3,10 @@ package com.system.smartparking.user.controller;
 import com.system.smartparking.user.dto.RegisterUserRequest;
 import com.system.smartparking.user.dto.UpdateUserRequest;
 import com.system.smartparking.user.dto.UserResponse;
-import com.system.smartparking.user.entity.User;
-import com.system.smartparking.user.mapper.UserMapper;
 import com.system.smartparking.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -42,6 +38,12 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody  UpdateUserRequest request){
         UserResponse response = userService.updateUser(id, request);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

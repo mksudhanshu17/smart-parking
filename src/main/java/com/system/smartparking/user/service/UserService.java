@@ -46,8 +46,14 @@ public class UserService {
     public UserResponse updateUser(Long id, UpdateUserRequest request){
         User user = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User does not exist!"));
         userMapper.updateFromRequest(request , user);
-        userRepository.save(user);
+       // userRepository.save(user);    not needed as Transactional manages the save
         return userMapper.mapToResponse(user);
+    }
+
+    // Delete User
+    public void deleteUser(Long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User does not exist"));
+        userRepository.delete(user);
     }
 
 
