@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
+
+    // Map RegisterUserRequest to the User
     public User mapToUser (RegisterUserRequest request){
         User user = new User();
         user.setName(request.getName());
@@ -16,7 +18,7 @@ public class UserMapper {
         user.setPassword(request.getPassword());
         return user;
     }
-
+    // Map User to the User Response
     public UserResponse mapToResponse(User user){
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
@@ -28,13 +30,13 @@ public class UserMapper {
         return userResponse;
     }
 
-    public User updateFromRequest(UpdateUserRequest request, User user){
+    // Map updateUserRequest to the User
+    public void updateFromRequest(UpdateUserRequest request, User user){
         if(request.getName() != null && !request.getName().isBlank()) {
         user.setName(request.getName());
         }
         if(request.getPhone() != null && !request.getPhone().isBlank()){
         user.setPhone(request.getPhone());
         }
-        return user;
     }
 }
