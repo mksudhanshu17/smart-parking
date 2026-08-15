@@ -12,6 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +21,10 @@ public class User {
     private String password;
     private String email;
     private String phone;
-    private Role role = Role.ROLE_USER;
+
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
+
+    @Enumerated(EnumType.STRING)
+    private UserStatus status = UserStatus.ACTIVE;
 }
