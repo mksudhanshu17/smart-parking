@@ -1,38 +1,40 @@
 package com.system.smartparking.user.service;
 
+import com.system.smartparking.user.dto.RegisterUserRequest;
+import com.system.smartparking.user.dto.UserResponse;
 import com.system.smartparking.user.entity.User;
 import com.system.smartparking.user.exception.UserAlreadyExistsException;
 import com.system.smartparking.user.exception.UserNotFoundException;
+import com.system.smartparking.user.mapper.UserMapper;
 import com.system.smartparking.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    // Create User
-    public User createUser(User user){
-        if(userRepository.existsById(user.getId())){
-            throw new UserAlreadyExistsException("User already exists");
+    // Register User
+    public UserResponse registerUser(RegisterUserRequest request){
+        if(userRepository.existsByEmail(request.getEmail())){
+            throw new UserAlreadyExistsException("User already registered");
         }
-       return userRepository.save(user);
+        User user = userMapper.mapToUser(request);
+        userRepository.save(user);
+        return userMapper.mapToResponse(user);
     }
 
     // Find User by User ID
     public User getById(Long id){
-        Optional<User> op = userRepository.findById(id);
-        if (op.isEmpty()){
-            throw new UserNotFoundException("User not found");
-        }
-        return op.get();
+        return userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User not found"));
     }
 
     // Find User by email ID;
     public User getByEmail(String email){
-        Optional<User> op = userRepository.getByEmail(email);
+       return userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException("User not found"));
     }
+
+
 }
