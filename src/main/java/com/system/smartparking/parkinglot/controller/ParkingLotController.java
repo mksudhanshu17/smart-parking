@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/parkingLots")
+@RequestMapping("/api/parking-lots")
 public class ParkingLotController {
     private final ParkingLotService parkingLotService;
 
