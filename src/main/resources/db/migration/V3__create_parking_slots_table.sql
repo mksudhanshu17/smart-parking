@@ -6,6 +6,7 @@ CREATE TABLE parking_slots(
     per_hour_price DECIMAL(10,2) NOT NULL ,
     floor INTEGER NOT NULL ,
     parking_lot_id BIGINT NOT NULL ,
+
     FOREIGN KEY(parking_lot_id) REFERENCES parking_lots(id)
 
 );

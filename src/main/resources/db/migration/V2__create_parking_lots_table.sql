@@ -3,5 +3,7 @@ CREATE TABLE parking_lots(
     name VARCHAR(30) NOT NULL ,
     location VARCHAR(30) NOT NULL ,
     total_floors INTEGER NOT NULL ,
-    status VARCHAR(20) NOT NULL
+    status VARCHAR(20) NOT NULL,
+
+    CONSTRAINT uk_parking_lot_name_location UNIQUE (name, location)
 );
