@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     // Delete User
+    @Transactional
     public void deleteUser(Long id){
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
         userRepository.delete(user);

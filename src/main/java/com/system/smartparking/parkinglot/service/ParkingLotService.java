@@ -11,9 +11,9 @@ public interface ParkingLotService {
 
     ParkingLotResponse getParkingLotById(Long id);
 
-    ParkingLotResponse updateParkingLot(UpdateParkingLotRequest request);
-
     List<ParkingLotResponse> getAllParkingLots();
+
+    ParkingLotResponse updateParkingLot(Long id, UpdateParkingLotRequest request);
 
     void deleteParkingLot(Long id);
 }
