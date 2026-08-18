@@ -1,50 +1,64 @@
 package com.system.smartparking.parkingslot.service;
 
+import com.system.smartparking.exception.ResourceNotFoundException;
+import com.system.smartparking.parkinglot.entity.ParkingLot;
+import com.system.smartparking.parkingslot.dto.CreateParkingSlotRequest;
+import com.system.smartparking.parkingslot.dto.ParkingSlotResponse;
+import com.system.smartparking.parkingslot.dto.UpdateParkingSlotRequest;
 import com.system.smartparking.parkingslot.entity.ParkingSlot;
+import com.system.smartparking.parkingslot.mapper.ParkingSlotMapper;
 import com.system.smartparking.parkingslot.repository.ParkingSlotRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ParkingSlotServiceImpl implements ParkingSlotService {
 
     private final ParkingSlotRepository parkingSlotRepository;
+    private final ParkingSlotMapper parkingSlotMapper;
 
-    public ParkingSlotServiceImpl(ParkingSlotRepository parkingSlotRepository){
+    public ParkingSlotServiceImpl(ParkingSlotRepository parkingSlotRepository, ParkingSlotMapper parkingSlotMapper){
         this.parkingSlotRepository = parkingSlotRepository;
+        this.parkingSlotMapper = parkingSlotMapper;
     }
 
     @Override
-    public ParkingSlot createParkingSlot(ParkingSlot parkingSlot){
-
-        return parkingSlotRepository.save(parkingSlot);
+    public ParkingSlotResponse createParkingSlot(CreateParkingSlotRequest request){
+        ParkingSlot parkingSlot = parkingSlotMapper.mapToParkingSlot(request);
+        parkingSlotRepository.save(parkingSlot);
+        return parkingSlotMapper.mapToResponse(parkingSlot);
     }
 
     @Override
-    public ParkingSlot getParkingSlotById(Long id){
+    public ParkingSlotResponse getParkingSlotById(Long id){
 
-        return parkingSlotRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Parking slot not found"));
+        ParkingSlot parkingSlot = parkingSlotRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Parking Slot not found"));
+
+        return parkingSlotMapper.mapToResponse(parkingSlot);
     }
 
     @Override
-    public List<ParkingSlot> getAllParkingSlot(){
+    public List<ParkingSlotResponse> getAllParkingSlot(){
 
-        return parkingSlotRepository.findAll();
+        List <ParkingSlot> parkingSlots = parkingSlotRepository.findAll();
+        List <ParkingSlotResponse> parkingSlotResponses = new ArrayList<>();
+        for(ParkingSlot s : parkingSlots){
+            parkingSlotResponses.add(parkingSlotMapper.mapToResponse(s));
+        }
+        return parkingSlotResponses;
     }
 
     @Override
-    public ParkingSlot updateParkingSlot(Long id, ParkingSlot parkingSlot){
-        ParkingSlot existingSlot = getParkingSlotById(id);
+    public ParkingSlotResponse updateParkingSlot(Long id, UpdateParkingSlotRequest request){
+        ParkingSlot existingSlot = parkingSlotRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Parking Lot not found!"));;
 
-        existingSlot.setSlotNumber(parkingSlot.getSlotNumber());
-        existingSlot.setSlotStatus(parkingSlot.getSlotStatus());
-        existingSlot.setSlotType(parkingSlot.getSlotType());
-        existingSlot.setPerHourPrice(parkingSlot.getPerHourPrice());
-        existingSlot.setFloor(parkingSlot.getFloor());
 
-        return parkingSlotRepository.save(existingSlot);
+
+        return parkingSlotMapper.mapToResponse(existingSlot);
 
     }
 
