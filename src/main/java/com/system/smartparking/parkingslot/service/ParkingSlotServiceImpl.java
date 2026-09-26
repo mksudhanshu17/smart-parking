@@ -1,8 +1,10 @@
 package com.system.smartparking.parkingslot.service;
 
+import com.system.smartparking.exception.ResourceNotFoundException;
 import com.system.smartparking.parkingslot.entity.ParkingSlot;
 import com.system.smartparking.parkingslot.repository.ParkingSlotRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,10 +24,11 @@ public class ParkingSlotServiceImpl implements ParkingSlotService {
     }
 
     @Override
+    @Transactional
     public ParkingSlot getParkingSlotById(Long id){
 
         return parkingSlotRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Parking slot not found"));
+                .orElseThrow(()->new ResourceNotFoundException("Parking slot not found"));
     }
 
     @Override
@@ -35,6 +38,7 @@ public class ParkingSlotServiceImpl implements ParkingSlotService {
     }
 
     @Override
+    @Transactional
     public ParkingSlot updateParkingSlot(Long id, ParkingSlot parkingSlot){
         ParkingSlot existingSlot = getParkingSlotById(id);
 
@@ -49,6 +53,7 @@ public class ParkingSlotServiceImpl implements ParkingSlotService {
     }
 
     @Override
+    @Transactional
     public void deleteParkingSlot(Long id){
 
         parkingSlotRepository.deleteById(id);
