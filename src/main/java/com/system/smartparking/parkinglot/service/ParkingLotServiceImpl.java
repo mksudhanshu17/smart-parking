@@ -53,17 +53,7 @@ public class ParkingLotServiceImpl implements ParkingLotService{
         @Transactional
         public ParkingLotResponse updateParkingLot(Long id, UpdateParkingLotRequest request){
                 ParkingLot parkingLot = parkingLotRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Parking Lot not found!"));
-                if(request.getName() != null && !request.getName().isBlank()){
-                        parkingLot.setName(request.getName());
-                }
-
-                if(request.getLocation() != null && !request.getLocation().isBlank()){
-                        parkingLot.setLocation(request.getLocation());
-                }
-
-                if(request.getTotalFloors() != null ){
-                        parkingLot.setTotalFloors(request.getTotalFloors());
-                }
+                parkingLotMapper.updateFromRequest(request, parkingLot);
 
                 return parkingLotMapper.mapToResponse(parkingLot);
         }
