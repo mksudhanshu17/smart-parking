@@ -11,15 +11,14 @@ import java.util.List;
 
 
 @RequiredArgsConstructor
+@RequestMapping("api/admin")
 @RestController
 public class AdminController {
 
     private final AdminService adminService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createManager(
-            @Valid @RequestBody RegisterUserRequest request) {
-
+    public ResponseEntity<UserResponse> createManager(@Valid @RequestBody RegisterUserRequest request) {
         UserResponse response = adminService.createManager(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -60,7 +59,7 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/managers")
     public ResponseEntity<List<UserResponse>> getAllManagers() {
         List<UserResponse> responseList = adminService.getAllManagers();
         return ResponseEntity.ok(responseList);
